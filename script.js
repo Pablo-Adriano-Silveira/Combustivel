@@ -159,7 +159,7 @@ function atualizarGrafico(dados) {
             plugins: {
                 title: {
                     display: true,
-                    text: 'Consumo de Combustível por Aeronave',
+                    text: '',
                     font: {
                         size: 16,
                         weight: 'bold'
