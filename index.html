@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Lançamento de Combustível</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+<body>
+    <!-- Modal de Login -->
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <h2 id="modalTitle">Confirmar Registro</h2>
+            <div class="form-group">
+                <label for="senha">Digite a senha para confirmar:</label>
+                <input type="password" id="senha" required>
+            </div>
+            <div class="button-group">
+                <button id="btnConfirmar">Confirmar</button>
+                <button id="btnCancelar" class="btn-cancelar">Cancelar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Edição -->
+    <div id="editModal" class="modal">
+        <div class="modal-content">
+            <h2>Editar Abastecimento</h2>
+            <form id="editForm">
+                <div class="form-group">
+                    <label for="editData">Data:</label>
+                    <input type="date" id="editData" required>
+                </div>
+                <div class="form-group">
+                    <label for="editHorario">Horário:</label>
+                    <input type="time" id="editHorario" required>
+                </div>
+                <div class="form-group">
+                    <label for="editAeronave">Aeronave:</label>
+                    <input type="text" id="editAeronave" required>
+                </div>
+                <div class="form-group">
+                    <label for="editMogas">Quantidade MOGAS (L):</label>
+                    <input type="number" id="editMogas" min="0" step="0.1" required>
+                </div>
+                <div class="form-group">
+                    <label for="editAvgas">Quantidade AVGAS (L):</label>
+                    <input type="number" id="editAvgas" min="0" step="0.1" required>
+                </div>
+                <div class="form-group">
+                    <label for="editResponsavel">Responsável:</label>
+                    <input type="text" id="editResponsavel" required>
+                </div>
+                <div class="button-group">
+                    <button type="submit">Salvar</button>
+                    <button type="button" id="btnCancelarEdicao" class="btn-cancelar">Cancelar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="container">
+        <header class="cabecalho">
+            <img src="images/IFA.png" alt="Logo IFA" class="logo">
+            <h1>Sistema de Lançamento de Combustível</h1>
+        </header>
+        
+        <!-- Manter apenas a exibição do reservatório -->
+        <div class="reservatorio-container">
+            <h2>Reservatório de Combustível MOGAS VISEU</h2>
+            <div class="reservatorio-info">
+                <div class="nivel-combustivel">
+                    <div class="tanque">
+                        <div id="nivel-atual" class="nivel"></div>
+                    </div>
+                    <div class="info-texto">
+                        <p>Capacidade Total: 3000L</p>
+                        <p>Disponível: <span id="quantidade-disponivel">0</span>L</p>
+                    </div>
+                </div>
+                <div class="controles-reservatorio">
+                    <button id="btnGerenciarReservatorio" class="btn-reservatorio">
+                        <i class="fas fa-gas-pump"></i> Gerenciar Reservatório
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal de Gerenciamento do Reservatório -->
+        <div id="reservatorioModal" class="modal">
+            <div class="modal-content">
+                <h2>Gerenciar Reservatório</h2>
+                <div class="form-group">
+                    <label for="quantidadeReservatorio">Quantidade (L):</label>
+                    <input type="number" id="quantidadeReservatorio" min="0" max="3000" step="0.1" required>
+                </div>
+                <div class="form-group">
+                    <label for="operacaoReservatorio">Operação:</label>
+                    <select id="operacaoReservatorio">
+                        <option value="adicionar">Adicionar</option>
+                        <option value="retirar">Retirar</option>
+                        <option value="definir">Definir Valor</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="senhaReservatorio">Senha:</label>
+                    <input type="password" id="senhaReservatorio" required>
+                </div>
+                <div class="button-group">
+                    <button id="btnConfirmarReservatorio">Confirmar</button>
+                    <button id="btnCancelarReservatorio" class="btn-cancelar">Cancelar</button>
+                </div>
+            </div>
+        </div>
+
+        <form id="combustivelForm">
+            <div class="form-group">
+                <label for="data">Data:</label>
+                <input type="date" id="data" required>
+            </div>
+
+            <div class="form-group">
+                <label for="horario">Horário:</label>
+                <input type="time" id="horario" required>
+            </div>
+
+            <div class="form-group">
+                <label for="aeronave">Aeronave:</label>
+                <input type="text" id="aeronave" required>
+            </div>
+
+            <div class="form-group">
+                <label for="mogas">Quantidade MOGAS (L):</label>
+                <input type="number" id="mogas" min="0" step="0.1" required>
+            </div>
+
+            <div class="form-group">
+                <label for="avgas">Quantidade AVGAS (L):</label>
+                <input type="number" id="avgas" min="0" step="0.1" required>
+            </div>
+
+            <div class="form-group">
+                <label for="responsavel">Responsável:</label>
+                <input type="text" id="responsavel" required>
+            </div>
+
+            <button type="submit">Registrar Abastecimento</button>
+        </form>
+
+        <div class="resultados">
+            <h2>Histórico de Abastecimentos 2025</h2>
+            <div class="acoes-backup">
+                <button id="btnDownloadCSV" class="btn-backup">
+                    <i class="fas fa-download"></i> Baixar Backup (CSV)
+                </button>
+                <div class="upload-wrapper">
+                    <button id="btnUploadCSV" class="btn-backup">
+                        <i class="fas fa-upload"></i> Restaurar Backup
+                    </button>
+                    <input type="file" id="fileUpload" accept=".csv" style="display: none;">
+                </div>
+            </div>
+            <div class="abas-container">
+                <div class="abas">
+                    <button class="aba-btn active" data-mes="todos">Todos</button>
+                    <button class="aba-btn" data-mes="1">Janeiro</button>
+                    <button class="aba-btn" data-mes="2">Fevereiro</button>
+                    <button class="aba-btn" data-mes="3">Março</button>
+                    <button class="aba-btn" data-mes="4">Abril</button>
+                    <button class="aba-btn" data-mes="5">Maio</button>
+                    <button class="aba-btn" data-mes="6">Junho</button>
+                    <button class="aba-btn" data-mes="7">Julho</button>
+                    <button class="aba-btn" data-mes="8">Agosto</button>
+                    <button class="aba-btn" data-mes="9">Setembro</button>
+                    <button class="aba-btn" data-mes="10">Outubro</button>
+                    <button class="aba-btn" data-mes="11">Novembro</button>
+                    <button class="aba-btn" data-mes="12">Dezembro</button>
+                </div>
+            </div>
+            <div id="historicoAbastecimentos"></div>
+            
+            <div class="graficos-container">
+                <div class="grafico-box">
+                    <h2>Consumo de Combustível por Aeronave</h2>
+                    <div class="grafico-container">
+                        <canvas id="graficoConsumo"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+
+    <!-- Adicionar antes do fechamento do body -->
+    <footer class="rodape">
+        <div class="container">
+            <p>© 2025 Sistema de Lançamento de Combustível - Desenvolvido por Pablo Adriano da Silva Silveira</p>
+            <p>Todos os direitos reservados. A Pablo Adriano não se responsabiliza por qualquer erro ou omissão de dados. </p>
+        </div>
+    </footer>
+</body>
+</html> 
