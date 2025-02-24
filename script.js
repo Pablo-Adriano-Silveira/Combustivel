@@ -257,10 +257,10 @@ function salvarDados(dados) {
 // Função para obter a URL da imagem da aeronave
 function getImagemAeronave(aeronave) {
     // Lista de aeronaves que usarão a imagem "aviao"
-    const aeronavesAviao = ['PT-NHO', 'PT-ABC']; // Adicione aqui os prefixos que usarão aviao1
+    const aeronavesAviao = ['PT-NHO', 'PT-ABC']; // Adicione aqui os prefixos que usarão aviao
     
-    // Se a aeronave estiver na lista, usa aviao.jpeg, senão usa aviao.jpeg
-    return aeronavesAviao.includes(aeronave) ? 'images/aviao.jpeg' : 'images/aviao.jpeg';
+    // Se a aeronave estiver na lista, usa aviao.jpg, senão usa aviao.jpg
+    return aeronavesAviao.includes(aeronave) ? 'images/aviao.jpg' : 'images/aviao.jpg';
 }
 
 // Função para filtrar dados por mês
